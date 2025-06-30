@@ -65,10 +65,12 @@ CREATE TABLE IF NOT EXISTS compra (
 	token INT AUTO_INCREMENT PRIMARY KEY,
     id_comprador INT NOT NULL,
     id_vendedor INT NOT NULL,
+    id_roupa INT NOT NULL,
     data_de_compra VARCHAR(10) NOT NULL,
     hora_de_compra VARCHAR(8) NOT NULL,
     endereco_entrega INT NOT NULL,
     FOREIGN KEY (id_comprador) REFERENCES comprador(id),
     FOREIGN KEY (id_vendedor) REFERENCES vendedor(id),
+    FOREIGN KEY (id_roupa) REFERENCES roupa(id),
     FOREIGN KEY (endereco_entrega) REFERENCES endereco(id)
 );
