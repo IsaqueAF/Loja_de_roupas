@@ -48,6 +48,12 @@ CREATE TABLE IF NOT EXISTS pessoa (
     FOREIGN KEY (endereco) REFERENCES endereco(id)
 );
 
+CREATE TABLE Vendedor (
+	id,
+	cargo,
+	FOREIGN KEY (pessoa) REFERENCES pessoa(id),
+	FOREIGN KEY (cargo) REFERENCES nivel(valor)
+)
 -- compra
 CREATE TABLE compra (
 	token INT AUTO_INCREMENT PRIMARY KEY,
