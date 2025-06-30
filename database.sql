@@ -1,3 +1,5 @@
+DROP DATABASE IF EXISTS loja;
+
 CREATE DATABASE loja;
 USE loja;
 

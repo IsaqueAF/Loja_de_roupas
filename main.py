@@ -12,17 +12,16 @@ def connect ():
 def CadastrarProduto (cursor):
     
     nome = input("Digite o nome da sua roupa: ")
-    quantidade = int(input("Digite a quantidade da sua roupa: "))
-    peso = float(input("Digite o peso da sua roupa: "))
+    quantidade = input("Digite a quantidade da sua roupa: ")
+    peso = input("Digite o peso da sua roupa: ")
     descricao = input("Digite a descrição da sua roupa: ")
     cor = input("Digite a cor da sua roupa: ")
     tamanho = input("Digite o tamanho da sua roupa: ")
 
     cursor.execute("""
-        INSERT INTO roupa(nome,quantidade,peso,descricao,cor,tamanho)
-        VALUES (%s,20,12,%s,%s,%s);
-    """, (nome,descricao,cor,tamanho))
-
+        INSERT INTO roupa (nome,quantidade,peso,descricao,cor,tamanho)
+        VALUES (%s,%s,%s,%s,%s,%s)
+    """, (nome,quantidade,peso,descricao,cor,tamanho))
     print("Cadastro feito com sucesso")
     
 
@@ -43,6 +42,10 @@ while True:
             CadastrarProduto(cursor)
         else:
             print("valor inválido")
+
+        connection.commit()
+        cursor.close()
+        connection.close()
 
     except connector.Error as error:
         print(error)
