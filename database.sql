@@ -1,6 +1,4 @@
-DROP DATABASE IF EXISTS loja;
-
-CREATE DATABASE loja;
+CREATE DATABASE IF NOT EXISTS loja;
 USE loja;
 
 -- produto
@@ -11,15 +9,13 @@ CREATE TABLE roupa (
     quantidade INT NOT NULL,
     descricao TEXT NOT NULL,
     cor VARCHAR(20) NOT NULL,
-    tamanho VARCHAR(20) NOT NULL
+    tamanho VARCHAR(20) NOT NULL,
+    preco FLOAT NOT NULL,
+    tipo VARCHAR(20) NOT NULL,
+    marca VARCHAR(20) NOT NULL
 );
 
 -- pessoa
-CREATE TABLE IF NOT EXISTS nivel (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    valor VARCHAR(20)
-);
-
 CREATE TABLE IF NOT EXISTS contatos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     telefone CHAR(14),
@@ -37,33 +33,42 @@ CREATE TABLE IF NOT EXISTS endereco (
     CEP CHAR(9)
 );
 
-CREATE TABLE IF NOT EXISTS pessoa (
+CREATE TABLE IF NOT EXISTS dados_gerais (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    data_de_nascimento VARCHAR(10) NOT NULL,
+    CPF INT UNIQUE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS comprador (
     id INT AUTO_INCREMENT PRIMARY KEY,
     contatos INT NOT NULL,
     endereco INT NOT NULL,
-    nivel INT NOT NULL,
-    nome VARCHAR(50) NOT NULL,
-    data_de_nascimento VARCHAR(10) NOT NULL,
-    CPF INT NOT NULL,
-    FOREIGN KEY (nivel) REFERENCES nivel(id),
+    dados_gerais INT NOT NULL,
     FOREIGN KEY (contatos) REFERENCES contatos(id),
-    FOREIGN KEY (endereco) REFERENCES endereco(id)
+    FOREIGN KEY (endereco) REFERENCES endereco(id),
+    FOREIGN KEY (dados_gerais) REFERENCES dados_gerais(id)
 );
 
-CREATE TABLE Vendedor (
-	id,
-	cargo,
-	FOREIGN KEY (pessoa) REFERENCES pessoa(id),
-	FOREIGN KEY (cargo) REFERENCES nivel(valor)
-)
+CREATE TABLE IF NOT EXISTS vendedor (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+    contatos INT NOT NULL,
+    dados_gerais INT NOT NULL,
+    data_de_contratacao VARCHAR(10) NOT NULL,
+    codigo_de_matricula INT NOT NULL,
+	FOREIGN KEY (contatos) REFERENCES contatos(id),
+    FOREIGN KEY (dados_gerais) REFERENCES dados_gerais(id)
+);
+
 -- compra
 CREATE TABLE compra (
 	token INT AUTO_INCREMENT PRIMARY KEY,
-    id_comprador INT,
-    id_vendedor INT,
-    hora VARCHAR(8),
-    endereco_de_entrega INT,
-    FOREIGN KEY (id_comprador) REFERENCES pessoa(id),
-    FOREIGN KEY (id_vendedor) REFERENCES pessoa(id),
-    FOREIGN KEY (endereco_de_entrega) REFERENCES endereco(id)
+    id_comprador INT NOT NULL,
+    id_vendedor INT NOT NULL,
+    data_de_compra VARCHAR(10) NOT NULL,
+    hora_de_compra VARCHAR(8) NOT NULL,
+    endereco_entrega INT NOT NULL,
+    FOREIGN KEY (id_comprador) REFERENCES comprador(id),
+    FOREIGN KEY (id_vendedor) REFERENCES vendedor(id),
+    FOREIGN KEY (endereco_entrega) REFERENCES endereco(id)
 );
