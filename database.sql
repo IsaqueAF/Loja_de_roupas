@@ -2,7 +2,7 @@ CREATE DATABASE IF NOT EXISTS loja;
 USE loja;
 
 -- produto
-CREATE TABLE roupa (
+CREATE TABLE IF NOT EXISTS roupa (
 	id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
     peso FLOAT NOT NULL,
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS vendedor (
 );
 
 -- compra
-CREATE TABLE compra (
+CREATE TABLE IF NOT EXISTS compra (
 	token INT AUTO_INCREMENT PRIMARY KEY,
     id_comprador INT NOT NULL,
     id_vendedor INT NOT NULL,
