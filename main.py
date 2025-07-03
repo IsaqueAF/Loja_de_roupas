@@ -1,5 +1,10 @@
 # bibliotecas
+import os
 import mysql.connector as connector
+from dotenv import load_dotenv
+load_dotenv()
+
+PASSWORD = os.getenv("PASSWORD")
 
 # funções
 def connect (): # função de conexão com o banco, retorna a conexão se tudo der certo
@@ -7,7 +12,7 @@ def connect (): # função de conexão com o banco, retorna a conexão se tudo d
         host="127.0.0.1",
         port=3306,
         user="root",
-        password="aluno",
+        password=PASSWORD,
         database="loja"
     )
 

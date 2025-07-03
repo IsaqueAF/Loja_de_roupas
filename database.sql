@@ -1,4 +1,4 @@
--- DROP DATABASE loja; -- Se isso tá aqui, é por que eu esqueci de apagar
+-- DROP DATABASE IF EXISTS loja; -- Se isso tá aqui, é por que eu esqueci de apagar
 
 CREATE DATABASE IF NOT EXISTS loja;
 USE loja;
@@ -7,12 +7,12 @@ USE loja;
 CREATE TABLE IF NOT EXISTS roupa (
 	id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
-    peso DECIMAL NOT NULL,
+    peso DECIMAL(5,2) NOT NULL,
     quantidade INT NOT NULL,
     descricao TEXT NOT NULL,
     cor VARCHAR(20) NOT NULL,
     tamanho VARCHAR(20) NOT NULL,
-    preco FLOAT NOT NULL,
+    preco DECIMAL(7,2) NOT NULL,
     tipo VARCHAR(20) NOT NULL,
     marca VARCHAR(20) NOT NULL
 );
