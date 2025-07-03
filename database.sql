@@ -1,3 +1,5 @@
+-- DROP DATABASE loja; -- Se isso tá aqui, é por que eu esqueci de apagar
+
 CREATE DATABASE IF NOT EXISTS loja;
 USE loja;
 
@@ -5,7 +7,7 @@ USE loja;
 CREATE TABLE IF NOT EXISTS roupa (
 	id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100) NOT NULL,
-    peso FLOAT NOT NULL,
+    peso DECIMAL NOT NULL,
     quantidade INT NOT NULL,
     descricao TEXT NOT NULL,
     cor VARCHAR(20) NOT NULL,
@@ -40,7 +42,7 @@ CREATE TABLE IF NOT EXISTS dados_gerais (
     CPF INT UNIQUE NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS comprador (
+CREATE TABLE IF NOT EXISTS cliente (
     id INT AUTO_INCREMENT PRIMARY KEY,
     contatos INT NOT NULL,
     endereco INT NOT NULL,
@@ -61,16 +63,25 @@ CREATE TABLE IF NOT EXISTS vendedor (
 );
 
 -- compra
-CREATE TABLE IF NOT EXISTS compra (
-	token INT AUTO_INCREMENT PRIMARY KEY,
-    id_comprador INT NOT NULL,
+CREATE TABLE IF NOT EXISTS carrinho (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+    id_cliente INT NOT NULL,
     id_vendedor INT NOT NULL,
-    id_roupa INT NOT NULL,
-    data_de_compra VARCHAR(10) NOT NULL,
-    hora_de_compra VARCHAR(8) NOT NULL,
+    hora_e_data_da_compra VARCHAR(8) NOT NULL,
     endereco_entrega INT NOT NULL,
-    FOREIGN KEY (id_comprador) REFERENCES comprador(id),
+    preco_total INT NOT NULL,
+    FOREIGN KEY (id_cliente) REFERENCES cliente(id),
     FOREIGN KEY (id_vendedor) REFERENCES vendedor(id),
-    FOREIGN KEY (id_roupa) REFERENCES roupa(id),
     FOREIGN KEY (endereco_entrega) REFERENCES endereco(id)
 );
+
+CREATE TABLE IF NOT EXISTS compra_unica (
+	id INT AUTO_INCREMENT PRIMARY KEY,
+    id_roupa INT NOT NULL,
+    id_carrinho INT NOT NULL,
+    quantidade INT,
+    FOREIGN KEY (id_roupa) REFERENCES roupa(id),
+    FOREIGN KEY (id_carrinho) REFERENCES carrinho(id)
+);
+
+SELECT * FROM roupa;
