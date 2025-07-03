@@ -1,6 +1,8 @@
+# bibliotecas
 import mysql.connector as connector
 
-def connect ():
+# funções
+def connect (): # função de conexão com o banco, retorna a conexão se tudo der certo
     return connector.connect(
         host="127.0.0.1",
         port=3306,
@@ -9,43 +11,56 @@ def connect ():
         database="loja"
     )
 
-def CadastrarProduto (cursor):
-    
-    nome = input("Digite o nome da sua roupa: ")
-    quantidade = input("Digite a quantidade da sua roupa: ")
-    peso = input("Digite o peso da sua roupa: ")
-    descricao = input("Digite a descrição da sua roupa: ")
-    cor = input("Digite a cor da sua roupa: ")
-    tamanho = input("Digite o tamanho da sua roupa: ")
+#def CadastrarPessoa:
 
-    cursor.execute("""
-        INSERT INTO roupa (nome,quantidade,peso,descricao,cor,tamanho)
-        VALUES (%s,%s,%s,%s,%s,%s)
-    """, (nome,quantidade,peso,descricao,cor,tamanho))
-    print("Cadastro feito com sucesso")
+functions = [] # vetor que receberá todas as funções da loja
+
+def CadastrarProduto(cursor):
+    nome = input('Digite o nome do seu produto: ')
+    preco = input('Digite o preco do seu produto: ')
+    quantidade = input('Digite a quantidade dispónível no momento do seu produto: ')
+    descricao = input('Dê uma descrição para o seu produto: ')
+    peso = input('Digite o peso médio do seu produto: ')
+    cor = input('Digite a cor disponível do seu produto (apenas uma): ')
+    tamanho = input('Digite o tamanho do seu produto: ')
+    tipo = input('Digite o tipo de roupa do seu produto: ')
+    marca = input('Digite a marca do seu produto: ')
     
+    cursor.execute("""
+        INSERT INTO roupa(nome, preco, quantidade, descricao, peso, cor, tamanho, tipo, marca)
+        VALUE (%s,%s,%s,%s,%s,%s,%s,%s,%s);
+    """, [nome, preco, quantidade, descricao, peso, cor, tamanho, tipo, marca])
+    
+    print("\nCadastro de roupa feito com sucesso!\n")
+
+functions.append(['Cadastre um produto', CadastrarProduto])
 
 while True:
 
-    print("\n   ---{ + LOJA DE ROUPA + }---\n")
+    print("   ---{ + LOJA DE ROUPA + }---\n")
     
-    print("1 - cadastrar produto")
-
-    responce = int(input("\n\nEscolha -> "))
+    for function in functions:
+        print(functions.index(function) + 1, " - ", function[0])
 
     try:
-
+        
+        responce = int(input("\nEscolha -> "))
+        
         connection = connect()
-        cursor = connection.cursor()
-
-        if responce == 1:
-            CadastrarProduto(cursor)
-        else:
-            print("valor inválido")
-
+        if connection.is_connected():
+            
+            cursor = connection.cursor()
+            
+            functions[responce - 1][1](cursor)
+        
         connection.commit()
         cursor.close()
         connection.close()
-
+        
     except connector.Error as error:
-        print(error)
+        print("\nAlgo deu errado!\n")
+        
+        print("Possível erro:", error, "\n")
+        
+    except:
+        print("\nNúmero ou caractere inválido\n")
