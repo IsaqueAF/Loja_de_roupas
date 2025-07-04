@@ -16,7 +16,7 @@ def connect (): # função de conexão com o banco, retorna a conexão se tudo d
         database="loja"
     )
 
-#def CadastrarPessoa:
+# def CadastrarPessoa:
 
 functions = [] # vetor que receberá todas as funções da loja
 
