@@ -13,50 +13,27 @@ def connect (): # função de conexão com o banco, retorna a conexão se tudo d
         port=3306,
         user="root",
         password=PASSWORD,
-        database="loja"
+        database="ClothesStore"
     )
 
-# def CadastrarPessoa:
-
-functions = [] # vetor que receberá todas as funções da loja
-
-def CadastrarProduto(cursor):
-    nome = input('Digite o nome do seu produto: ')
-    preco = input('Digite o preco do seu produto: ')
-    quantidade = input('Digite a quantidade dispónível no momento do seu produto: ')
-    descricao = input('Dê uma descrição para o seu produto: ')
-    peso = input('Digite o peso médio do seu produto: ')
-    cor = input('Digite a cor disponível do seu produto (apenas uma): ')
-    tamanho = input('Digite o tamanho do seu produto: ')
-    tipo = input('Digite o tipo de roupa do seu produto: ')
-    marca = input('Digite a marca do seu produto: ')
+def GetUserId(cursor): # retorna o ID do usuário salvo no banco de dados ou cria um cadastro novo e retorna seu ID
     
-    cursor.execute("""
-        INSERT INTO roupa(nome, preco, quantidade, descricao, peso, cor, tamanho, tipo, marca)
-        VALUE (%s,%s,%s,%s,%s,%s,%s,%s,%s);
-    """, [nome, preco, quantidade, descricao, peso, cor, tamanho, tipo, marca])
-    
-    print("\nCadastro de roupa feito com sucesso!\n")
 
-functions.append(['Cadastre um produto', CadastrarProduto])
+# Execução inicial
+print("   ---{ + LOJA DE ROUPA + }---\n")
+CadastroDoUsuario = None
 
 while True:
-
-    print("   ---{ + LOJA DE ROUPA + }---\n")
-    
-    for function in functions:
-        print(functions.index(function) + 1, " - ", function[0])
-
     try:
-        
-        responce = int(input("\nEscolha -> "))
-        
         connection = connect()
+        
         if connection.is_connected():
-            
             cursor = connection.cursor()
             
-            functions[responce - 1][1](cursor)
+            if CadastroDoUsuario:
+                pass
+            else:
+                CadastroDoUsuario = GetUserId()
         
         connection.commit()
         cursor.close()
@@ -64,8 +41,4 @@ while True:
         
     except connector.Error as error:
         print("\nAlgo deu errado!\n")
-        
         print("Possível erro:", error, "\n")
-        
-    except:
-        print("\nNúmero ou caractere inválido\n")
